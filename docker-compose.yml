@@ -1,0 +1,32 @@
+# docker-compose.yml — Coolify Deploy
+# Preencha as variáveis de ambiente no painel do Coolify antes de fazer o deploy.
+# Somente as chaves que você for usar precisam ser preenchidas.
+
+services:
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes
+    restart: unless-stopped
+    command: gateway run
+    shm_size: "1gb"
+    volumes:
+      - hermes-data:/opt/data
+    environment:
+      # ===== Provedor de LLM (preencha pelo menos um) =====
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+
+      # ===== Integrações opcionais =====
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN:-}
+      - DISCORD_CHANNEL_ID=${DISCORD_CHANNEL_ID:-}
+
+      # ===== Configurações gerais (opcionais) =====
+      - HERMES_DATA_DIR=/opt/data
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+
+volumes:
+  hermes-data:
+    driver: local
