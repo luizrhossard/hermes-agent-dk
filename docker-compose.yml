@@ -9,6 +9,8 @@ services:
     restart: unless-stopped
     command: gateway run
     shm_size: "1gb"
+    ports:
+      - "8644:8644"  # ← ADICIONADO: expõe a porta do webhook
     volumes:
       - hermes-data:/opt/data
     environment:
